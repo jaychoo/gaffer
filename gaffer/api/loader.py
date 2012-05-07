@@ -3,8 +3,6 @@ import sys
 import re
 
 DEFAULT_PATH = './modules'
-INVALID = ('~', '__init__', '.pyc')
-
 
 def get_modules(path=DEFAULT_PATH):
     regex = re.compile(r'~|__init__|pyc')
@@ -21,4 +19,3 @@ if __name__ == '__main__':
     for m in modules:
         mod = __import__(m)
         mod.run()
-
