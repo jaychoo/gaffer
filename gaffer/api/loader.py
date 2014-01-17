@@ -19,7 +19,10 @@ def get_modules(path):
 def handlers():
     api_module = []
     for m in get_modules(MODULE_PATH):
-        mod = __import__(m)
-        logger.debug('%s loaded')
-        api_module.append(mod.dispatch())
+        try:
+            mod = __import__(m)
+            logger.debug('%s loaded' % mod)
+            api_module.append(mod.dispatch())
+        except Exception as e:
+            logger.exception(e)
     return api_module
