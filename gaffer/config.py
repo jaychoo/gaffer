@@ -13,6 +13,6 @@ LOGGING_FORMAT = '%(asctime)s %(name)-12s %(levelname)-8s %(message)s'
 
 sys.path.insert(0, MODULE_PATH)
 
-logging.basicConfig(format=LOGGING_FORMAT, datefmt='%m-%d %H:%M')
+
+logging.basicConfig(level=LOGGING_LEVEL, format=LOGGING_FORMAT, datefmt='%m-%d %H:%M')
 logger = logging.getLogger('gaffer')
-logger.setLevel(LOGGING_LEVEL)
