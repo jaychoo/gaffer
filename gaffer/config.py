@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # Default settings for Gaffer
 
 import os

@@ -1,6 +1,15 @@
+# -*- coding: utf-8 -*-
+
+"""
+Sample API module
+"""
+
 from gaffer.api.base import APIHandler
 
 def dispatch():
+    """
+    Return APIHandler object
+    """
     def sample1():
         return "Sample 1"
     def sample2():
