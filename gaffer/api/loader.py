@@ -2,9 +2,10 @@ import os
 import sys
 import re
 
-DEFAULT_PATH = './modules'
+from gaffer.config import logger, MODULE_PATH
 
-def get_modules(path=DEFAULT_PATH):
+
+def get_modules(path):
     regex = re.compile(r'~|__init__|pyc')
     # Generator chain
     items = (i for i in os.listdir(path))
@@ -12,10 +13,11 @@ def get_modules(path=DEFAULT_PATH):
     modules = map(lambda j: j[0], map(os.path.splitext, filenames))
     return set(modules)
 
-if __name__ == '__main__':
-    modules = get_modules()
-    sys.path.insert(0, 'modules')
 
-    for m in modules:
+def handlers():
+    api_module = []
+    for m in get_modules(MODULE_PATH):
         mod = __import__(m)
-        mod.run()
+        logger.debug('%s loaded')
+        api_module.append(mod.dispatch())
+    return api_module
