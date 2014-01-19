@@ -3,9 +3,10 @@
 from flask import request
 
 from gaffer.config import logger
+from gaffer.api.error import GafferError
 
 
-class APIHandler(object):
+class GafferAPIBase(object):
     def __init__(self, dispatch, name, version='v1'):
         self.dispatch = dispatch
         self.name = name
@@ -19,5 +20,4 @@ class APIHandler(object):
             fn = self.dispatch.get(request.path.strip('/'))
             return fn(*args, **kwargs)
         except Exception as e:
-            logger.exception(e)
-            return self.default()
+            raise GafferError(e)

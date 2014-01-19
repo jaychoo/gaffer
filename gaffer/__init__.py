@@ -3,9 +3,11 @@
 from flask import Flask
 
 app = Flask(__name__)
+app.config.from_object('config')
 
 from gaffer.api import loader
 from gaffer.config import logger
+
 
 api_handlers = loader.handlers()
 if api_handlers:
