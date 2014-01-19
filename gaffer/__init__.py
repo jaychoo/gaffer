@@ -8,7 +8,6 @@ app.config.from_object('config')
 from gaffer.api import loader
 from gaffer.config import logger
 
-
 api_handlers = loader.handlers()
 if api_handlers:
     for handler in api_handlers:

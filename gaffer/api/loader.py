@@ -3,9 +3,8 @@
 import os
 import sys
 import re
-import logging
 
-from gaffer.config import logger, MODULE_PATH, MODULE_EXMPT_REGEX
+from gaffer.config import MODULE_PATH, MODULE_EXMPT_REGEX, logger
 from gaffer.api.error import GafferError
 
 
@@ -23,7 +22,7 @@ def handlers():
         for module_name in get_modules(path):
             try:
                 module = __import__(module_name)
-                logging.debug('%s loaded' % module)
+                logger.debug('%s loaded' % module)
                 dispatch = module.dispatch()
                 if dispatch:
                     api_modules.append(dispatch)

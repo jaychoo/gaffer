@@ -2,7 +2,6 @@
 
 from flask import request
 
-from gaffer.config import logger
 from gaffer.api.error import GafferError
 
 
