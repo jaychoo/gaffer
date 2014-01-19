@@ -3,13 +3,14 @@
 import os
 import sys
 import re
+import logging
 
-from gaffer.config import logger, MODULE_PATH
+from gaffer.config import logger, MODULE_PATH, MODULE_EXMPT_REGEX
+from gaffer.api.error import GafferError
 
 
 def get_modules(path):
-    regex = re.compile(r'~|__init__|pyc')
-    # Generator chain
+    regex = re.compile(MODULE_EXMPT_REGEX)
     items = (i for i in os.listdir(path))
     filenames = (i for i in items if not regex.search(i))
     modules = map(lambda j: j[0], map(os.path.splitext, filenames))
@@ -17,12 +18,15 @@ def get_modules(path):
 
 
 def handlers():
-    api_module = []
-    for m in get_modules(MODULE_PATH):
-        try:
-            mod = __import__(m)
-            logger.debug('%s loaded' % mod)
-            api_module.append(mod.dispatch())
-        except Exception as e:
-            logger.exception(e)
-    return api_module
+    api_modules = []
+    for path in MODULE_PATH:
+        for module_name in get_modules(path):
+            try:
+                module = __import__(module_name)
+                logging.debug('%s loaded' % module)
+                dispatch = module.dispatch()
+                if dispatch:
+                    api_modules.append(dispatch)
+            except GafferError as e:
+                logger.exception(e)
+    return api_modules
