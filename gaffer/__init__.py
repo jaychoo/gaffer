@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
 
+import logging
+
 from flask import Flask
+
+from gaffer.api import loader
+
 
 app = Flask(__name__)
 app.config.from_object('config')
-
-from gaffer.api import loader
-from gaffer.config import logger
+logger = logging.getLogger(__name__)
 
 api_handlers = loader.handlers()
 if api_handlers:
