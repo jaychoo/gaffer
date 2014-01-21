@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1>{{ title }} API version: {{ version }}</h1>
+<p class="lead">With Flask</p>
+
+{% for api in api_list %}
+  <li><a href="{{ api.url }}">{{ api.url }}</a></li>
+{% endfor %}
+
+{% endblock %}

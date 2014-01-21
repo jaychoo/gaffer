@@ -2,7 +2,7 @@
 
 import re
 
-from flask import request
+from flask import request, render_template
 
 from gaffer.api.error import GafferError
 
@@ -14,21 +14,25 @@ def slugify(s):
 class GafferAPIBase(object):
     def __init__(self, dispatch, service_name, version='v1'):
         self.name = service_name
-        self.service_name_slug = slugify(self.name)
+        self.slug = slugify(self.name)
         self.version = version
 
-        dispatch_prefix = '/%s/%s/' % (self.service_name_slug, self.version)
+        dispatch_prefix = '/%s/%s/' % (self.slug, self.version)
 
         self.dispatch = {dispatch_prefix: self.index}
         for url_pattern, fn in dispatch.items():
             self.dispatch['%s%s' % (dispatch_prefix, url_pattern)] = fn
 
     def index(self, *args, **kwargs):
-        return '<h1>%s %s</h1>' % (self.name, self.version)
+        api_list = [{'url':i[0], 'fn': i[1]} for i in self.dispatch.items()]
+        context = {'title': self.name, 
+        'version': self.version, 
+        'api_list': api_list}
+        
+        return render_template('index.html', **context) 
 
     def __call__(self, *args, **kwargs):
         try:
-            print request.path
             fn = self.dispatch.get(request.path)
             return fn(*args, **kwargs)
         except Exception as e:
