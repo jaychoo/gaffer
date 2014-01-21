@@ -15,7 +15,7 @@ api_handlers = loader.handlers()
 if api_handlers:
     for handler in api_handlers:
         try:
-            for k, v in handler.dispatch.items():
-                app.add_url_rule('/%s/%s' % (handler.version, k), k, v)
+            for key in handler.dispatch:
+                app.add_url_rule(key, key, handler)
         except Exception as e:
             logger.exception(e)

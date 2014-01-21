@@ -16,7 +16,6 @@ def dispatch():
     Return APIHandler object
     """
     def sample1():
-        logging.debug(request)
         return "Sample 1"
 
     def sample2():
